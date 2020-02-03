@@ -74,3 +74,15 @@ freq_classifiers<-function(df){
 }
 
 #This works!
+
+
+##function to limit the result of freq_users.R to folks who have posted at least 15 classifications.#Requires DF that results from freq_users function
+
+at_least_15<-function(df){
+#filter to include only those who have made at least 15 classificaitons.
+	require(dplyr)
+	meet_min<-filter(df, NumClass >= 15 )
+	return(meet_min)
+}
+
+#Works!
