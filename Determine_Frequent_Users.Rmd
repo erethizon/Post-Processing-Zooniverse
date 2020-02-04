@@ -1,0 +1,49 @@
+---
+title: "Determining users"
+author: "Erika"
+date: "2/3/2020"
+output: html_document
+---
+## Introduction
+In order to maximize engagement with the NoCoWild project, we need to celebrate the folks who do a lot of classifiying.  This set of R scripts will step through the process.  Note that to do this work requires access to the files "choose_workflow_version.R" and "freq_users.R".
+
+## Step 1. Load some data and assign the working directory
+
+```{r}
+library(readr)
+NoCo <- read_csv("~/Dropbox/R/NoCoWild/Data/north-country-wild-classifications.2.3.2020.csv")
+```
+Assign working directory
+```{r}
+setwd("/Users/ebar/Dropbox/R/Post-Processing-Zooniverse")
+```
+
+
+## Step 2. Isolate the proper workflow.
+A single data output may have more than one workflow associated with it, which means the classifiers may have been asked different questions in different workflows and that the data won't match. Thus, we need to isolate the date to a particular workflow.  
+
+To do so, we will run a home-made function called "choose_workflow_version". Doing so will ask us to name the workflow # and the version of that workflow. Save the result as a new data frame.
+```{r}
+source("Functions/choose_workflow_version.R") #turns on the function in the .R script
+
+NoCo_use<-choose_my_workflow(NoCo)
+```
+We have now subsetted the data to a particular workflow and version.  
+
+## Step 3. Determine the most frequent classifiers by week.
+
+To determine the most frequent classifiers, we need to run some functions in the file "freq_users.R" so let's source it.
+
+```{r}
+source("Functions/freq_users.R")
+```
+Now run the frequent classifiers function to obtain the top number of classifiers by week.  Let's go with the top 5.
+
+```{r}
+Most<-freq_classifiers(NoCo_use)
+```
+Now let's take a look:
+```{r}
+View(Most)
+```
+Note that this .Rmd file won't run as a knit file and print a html page because there are several lines of code that call for user input in order to proceed, which you can't include in markdown output.
